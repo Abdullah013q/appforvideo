@@ -6,4 +6,3 @@ export default function AdminLayout({ children }) {
       </section>
     );
   }
-  

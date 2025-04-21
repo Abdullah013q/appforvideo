@@ -1,24 +1,23 @@
-import connect from '@/lib/mongoose';
+import dbConnect from '@/lib/mongoose';
 import Video from '@/models/Video';
-import { notFound } from 'next/navigation';
 
 export default async function VideoPage({ params }) {
-  await connect();
-  const video = await Video.findById(params.id).lean();
-  if (!video) return notFound();
+  await dbConnect();
+  const video = await Video.findById(params.id);
 
   return (
-    <main className="max-w-2xl mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">{video.title}</h1>
-      <div className="aspect-video mb-4">
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-2">{video.title}</h1>
+      <div className="mb-4">
         <iframe
-          className="w-full h-full"
-          src={`https://www.youtube.com/embed/${video.youtubeId}`}
+          className="w-full aspect-video"
+          src={video.url}
+          title={video.title}
           frameBorder="0"
           allowFullScreen
-        />
+        ></iframe>
       </div>
-      <p className="text-lg">{video.description}</p>
-    </main>
+      <p>{video.description}</p>
+    </div>
   );
 }
